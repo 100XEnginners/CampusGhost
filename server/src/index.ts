@@ -1,12 +1,10 @@
 import express from "express";
 import type { Request, Response, Express } from "express";
 import dotenv from "dotenv";
-import path from "path";
 import { userRouter } from "./routes/user";
 
 dotenv.config({
-  override: true,
-  path: path.join(__dirname, "../.env"),
+  override: true
 })
 
 const app: Express = express();
