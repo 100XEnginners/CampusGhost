@@ -4,8 +4,8 @@ import dotenv from "dotenv";
 import { userRouter } from "./routes/user";
 
 dotenv.config({
-  override: true
-})
+  override: true,
+});
 
 const app: Express = express();
 app.use(express.json());
@@ -18,10 +18,9 @@ app.get("/ping", async (_req: Request, res: Response) => {
   } catch (error) {
     console.error(error);
     res.sendStatus(500);
-
   }
-})
+});
 
 app.listen(process.env.PORT, () => {
-  console.log(`Express server is listenng on http://localhost:${8080}`)
-})
+  console.log(`Express server is listenng on http://localhost:${8080}`);
+});
