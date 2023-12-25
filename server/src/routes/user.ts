@@ -5,6 +5,12 @@ import type { Request, Response } from "express";
 export const userRouter: Router = Router();
 const prisma = new PrismaClient();
 
-userRouter.get("/", async (_req: Request, res: Response) => {
-  res.send("user router working");
+userRouter.get("/signup", async (req: Request, res: Response) => {
+  try {
+
+  } catch (error) {
+    console.error(error);
+    prisma.$disconnect();
+    res.sendStatus(500);
+  }
 });
