@@ -26,6 +26,7 @@ model User {
   createdAt      DateTime @default(now())
   updatedAt      DateTime @default(now())
   email          String   @unique
+  hashedPassword String
   randomUserName String   @unique
   profilePicture String?
   Post           Post[]
