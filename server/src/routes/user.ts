@@ -5,7 +5,6 @@ import { signupSchema } from "../zod/zod-schema";
 import { generateRandomuserName } from "../util/random-user-name";
 import bcrypt from "bcryptjs";
 import { generateUserJWT } from "../jwt-auth/user-auth";
-import { strict } from "assert";
 
 export const userRouter: Router = Router();
 const prisma = new PrismaClient();
