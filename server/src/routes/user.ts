@@ -4,6 +4,8 @@ import type { Request, Response } from "express";
 import { signupSchema } from "../zod/zod-schema";
 import { generateRandomuserName } from "../util/random-user-name";
 import bcrypt from "bcryptjs";
+import { generateUserJWT } from "../jwt-auth/user-auth";
+import { strict } from "assert";
 
 export const userRouter: Router = Router();
 const prisma = new PrismaClient();
@@ -58,7 +60,6 @@ userRouter.post("/signin", async (req: Request, res: Response) => {
     });
     await prisma.$disconnect();
     if (!userData) {
-      await prisma.$disconnect();
       return res.status(404).json({ message: "User email not found" });
     }
     const isPasswordMatch: boolean = await bcrypt.compare(
@@ -74,6 +75,15 @@ userRouter.post("/signin", async (req: Request, res: Response) => {
       id,
       randomUserName,
     };
+    const userToken: string = generateUserJWT(userPayload);
+    res.cookie("userAccessToken", userToken, {
+      domain: "localhost",
+      path: "/",
+      maxAge: 60 * 60 * 1000,
+      secure: true,
+      sameSite: "strict",
+    });
+    return res.json({ message: "Logged in successfully" });
   } catch (error) {
     console.error(error);
     await prisma.$disconnect();
