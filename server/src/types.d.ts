@@ -6,7 +6,7 @@ type decodedUser = {
 };
 
 declare namespace Experss {
-  interface Request {
+  export interface Request {
     decodedUser: decodedUser;
   }
 }

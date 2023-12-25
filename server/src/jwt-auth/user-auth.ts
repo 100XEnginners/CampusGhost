@@ -1,4 +1,4 @@
-import { NextFunction, Request, Response } from "express";
+import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
 
 export function generateUserJWT(userPayload: {
@@ -22,7 +22,7 @@ export function authenticateUserJWT(
       if (err) {
         res.sendStatus(403);
       } else {
-        // req.decodedUser = decoded as decodedUser;
+        req.decodedUser = decoded as decodedUser;
         next();
       }
     });
