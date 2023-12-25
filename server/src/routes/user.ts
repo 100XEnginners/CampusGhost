@@ -40,7 +40,43 @@ userRouter.post("/signup", async (req: Request, res: Response) => {
     }
   } catch (error) {
     console.error(error);
-    prisma.$disconnect();
+    await prisma.$disconnect();
+    res.sendStatus(500);
+  }
+});
+
+userRouter.post("/signin", async (req: Request, res: Response) => {
+  try {
+    const parsedInput = signupSchema.safeParse(req.body);
+    if (!parsedInput.success) {
+      return res.status(411).json({ message: parsedInput.error.format() });
+    }
+    const { email, password }: { email: string; password: string } =
+      parsedInput.data;
+    const userData: User | null = await prisma.user.findUnique({
+      where: { email },
+    });
+    await prisma.$disconnect();
+    if (!userData) {
+      await prisma.$disconnect();
+      return res.status(404).json({ message: "User email not found" });
+    }
+    const isPasswordMatch: boolean = await bcrypt.compare(
+      password,
+      userData.hashedPassword,
+    );
+    if (!isPasswordMatch) {
+      return res.status(401).json({ message: "Invalid password" });
+    }
+    const { id, randomUserName }: { id: number; randomUserName: string } =
+      userData;
+    const userPayload: { id: number; randomUserName: string } = {
+      id,
+      randomUserName,
+    };
+  } catch (error) {
+    console.error(error);
+    await prisma.$disconnect();
     res.sendStatus(500);
   }
 });
