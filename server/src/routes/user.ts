@@ -3,6 +3,7 @@ import { Router } from "express";
 import type { Request, Response } from "express";
 import { signupSchema } from "../zod/zod-schema";
 import { generateRandomuserName } from "../util/random-user-name";
+import bcrypt from "bcryptjs";
 
 export const userRouter: Router = Router();
 const prisma = new PrismaClient();
@@ -24,7 +25,8 @@ userRouter.post("/signup", async (req: Request, res: Response) => {
           .status(403)
           .json({ message: "User email address already exists" });
       }
-      const hashedPassword: string = password;
+      const saltRounds: number = 8;
+      const hashedPassword: string = await bcrypt.hash(password, saltRounds);
       const randomUserName: string = generateRandomuserName(10);
       await prisma.user.create({
         data: {
