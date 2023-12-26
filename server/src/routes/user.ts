@@ -4,7 +4,8 @@ import type { Request, Response } from "express";
 import { signupSchema } from "../zod/zod-schema";
 import { generateRandomuserName } from "../util/random-user-name";
 import bcrypt from "bcryptjs";
-import { generateUserJWT } from "../jwt-auth/user-auth";
+import { authenticateUserJWT, generateUserJWT } from "../jwt-auth/user-auth";
+import { userInfo } from "os";
 
 export const userRouter: Router = Router();
 const prisma = new PrismaClient();
@@ -88,3 +89,10 @@ userRouter.post("/signin", async (req: Request, res: Response) => {
     res.sendStatus(500);
   }
 });
+
+userRouter.get("/profile", authenticateUserJWT, async (req: Request, res: Response) => {
+  try {
+  } catch (error) {
+
+  }
+})
