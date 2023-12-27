@@ -1,7 +1,11 @@
 import { PrismaClient, User } from "@prisma/client";
 import { Router } from "express";
 import type { Request, Response } from "express";
-import { passwordUpdateSchema, signupSchema } from "../zod/zod-schema";
+import {
+  emailUpdateSchema,
+  passwordUpdateSchema,
+  signupSchema,
+} from "../zod/zod-schema";
 import { generateRandomuserName } from "../util/random-user-name";
 import bcrypt from "bcryptjs";
 import { authenticateUserJWT, generateUserJWT } from "../jwt-auth/user-auth";
@@ -180,6 +184,33 @@ userRouter.post(
     } catch (error) {
       await prisma.$disconnect();
       console.error(error);
+      res.sendStatus(500);
+    }
+  },
+);
+
+userRouter.post(
+  "/update-email",
+  authenticateUserJWT,
+  async (req: Request, res: Response) => {
+    try {
+      const decodedUser: decodedUser = req.decodedUser;
+      const parsedInput = emailUpdateSchema.safeParse(req.body);
+      if (!parsedInput.success) {
+        return res.status(411).json(parsedInput.error.format());
+      }
+      const { newEmail }: { newEmail: string } = parsedInput.data;
+      await prisma.user.update({
+        where: { id: decodedUser.id },
+        data: {
+          email: newEmail,
+        },
+      });
+      await prisma.$disconnect();
+      res.json({ message: "Email updated successfully" });
+    } catch (error) {
+      console.error(error);
+      await prisma.$disconnect();
       res.sendStatus(500);
     }
   },

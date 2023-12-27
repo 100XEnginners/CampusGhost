@@ -13,11 +13,6 @@ export const signupSchema = z.object({
 });
 
 export const emailUpdateSchema = z.object({
-  email: z
-    .string()
-    .email()
-    .min(3, "Email must be at least 3 characters long.")
-    .max(254, "Email must be no longer than 254 characters long."),
   newEmail: z
     .string()
     .email()
