@@ -89,6 +89,20 @@ userRouter.post("/signin", async (req: Request, res: Response) => {
   }
 });
 
+userRouter.post(
+  "/logout",
+  authenticateUserJWT,
+  async (req: Request, res: Response) => {
+    try {
+      res.clearCookie("userAccessToken");
+      res.json({ message: "Logged out successfully" });
+    } catch (error) {
+      console.error(error);
+      res.sendStatus(500);
+    }
+  },
+);
+
 userRouter.get(
   "/profile",
   authenticateUserJWT,
