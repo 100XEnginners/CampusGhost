@@ -1,7 +1,7 @@
 import { PrismaClient, User } from "@prisma/client";
 import { Router } from "express";
 import type { Request, Response } from "express";
-import { profileUpdateSchema, signupSchema } from "../zod/zod-schema";
+import { passwordUpdateSchema, signupSchema } from "../zod/zod-schema";
 import { generateRandomuserName } from "../util/random-user-name";
 import bcrypt from "bcryptjs";
 import { authenticateUserJWT, generateUserJWT } from "../jwt-auth/user-auth";
@@ -117,25 +117,21 @@ userRouter.get(
 );
 
 userRouter.post(
-  "/update-profile",
+  "/update-password",
   authenticateUserJWT,
   async (req: Request, res: Response) => {
     try {
       const decodedUser: decodedUser = req.decodedUser;
-      const parsedInput = profileUpdateSchema.safeParse(req.body);
+      const parsedInput = passwordUpdateSchema.safeParse(req.body);
       if (!parsedInput.success) {
         return res.status(411).json({ message: parsedInput.error.format() });
       }
       const {
-        email,
-        password,
         currentPassword,
-        profilePicture,
+        newPassword,
       }: {
-        email: string;
-        password: string;
         currentPassword: string;
-        profilePicture: string;
+        newPassword: string;
       } = parsedInput.data;
       const userData: { id: number; hashedPassword: string } | null =
         await prisma.user.findUnique({
@@ -147,25 +143,26 @@ userRouter.post(
         });
       const isPasswordMath: boolean = await bcrypt.compare(
         currentPassword,
-        userData.hashedPassword,
+        userData!.hashedPassword,
       );
       if (!isPasswordMath) {
+        await prisma.$disconnect();
         return res
           .status(401)
           .json({ message: "Current password does not match." });
       }
       const newHashedPassword: string = await bcrypt.hash(
-        password,
+        newPassword,
         saltRounds,
       );
       await prisma.user.update({
         where: { id: decodedUser.id },
         data: {
-          email,
           hashedPassword: newHashedPassword,
-          profilePicture,
         },
       });
+      await prisma.$disconnect();
+      res.json({ message: "Profile updated successfully" });
     } catch (error) {
       await prisma.$disconnect();
       console.error(error);
