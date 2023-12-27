@@ -4,6 +4,7 @@ import type { Request, Response } from "express";
 import {
   emailUpdateSchema,
   passwordUpdateSchema,
+  profilePictureUpdateSchema,
   signupSchema,
 } from "../zod/zod-schema";
 import { generateRandomuserName } from "../util/random-user-name";
@@ -208,6 +209,34 @@ userRouter.post(
       });
       await prisma.$disconnect();
       res.json({ message: "Email updated successfully" });
+    } catch (error) {
+      console.error(error);
+      await prisma.$disconnect();
+      res.sendStatus(500);
+    }
+  },
+);
+
+userRouter.post(
+  "/update-profile-picture",
+  authenticateUserJWT,
+  async (req: Request, res: Response) => {
+    try {
+      const decodedUser: decodedUser = req.decodedUser;
+      const parsedInput = profilePictureUpdateSchema.safeParse(req.body);
+      if (!parsedInput.success) {
+        return res.status(411).json(parsedInput.error.format());
+      }
+      const { newProfilePicture }: { newProfilePicture: stirng } =
+        parsedInput.data;
+      await prisma.user.update({
+        where: { id: decodedUser.id },
+        data: {
+          profilePicture: newProfilePicture,
+        },
+      });
+      await prisma.$disconnect();
+      res.json({ message: "Profile picture successfully" });
     } catch (error) {
       console.error(error);
       await prisma.$disconnect();

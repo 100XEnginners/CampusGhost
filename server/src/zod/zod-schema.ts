@@ -30,3 +30,7 @@ export const passwordUpdateSchema = z.object({
     .min(8, "Password must be at least 8 character long.")
     .max(254, "Password must be no longer than 254 characters."),
 });
+
+export const profilePictureUpdateSchema = z.object({
+  newProfilePicture: z.string(),
+});
