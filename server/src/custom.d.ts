@@ -14,7 +14,7 @@ type decodedUser = {
   exp: number;
 };
 
-declare namespace Experss {
+declare namespace Express {
   export interface Request {
     decodedUser: decodedUser;
   }
