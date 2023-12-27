@@ -96,9 +96,23 @@ userRouter.get(
     try {
       const decodedUser: decodedUser = req.decodedUser;
       console.log(decodedUser);
-      res.json({ message: "hello" });
+      const userData: userData | null = await prisma.user.findUnique({
+        where: { id: decodedUser.id },
+        select: {
+          id: true,
+          createdAt: true,
+          updatedAt: true,
+          email: true,
+          randomUserName: true,
+          profilePicture: true
+        }
+      })
+      await prisma.$disconnect();
+      res.json({ userData });
     } catch (error) {
       console.error(error);
+      await prisma.$disconnect();
+      res.sendStatus(500);
     }
   },
 );
