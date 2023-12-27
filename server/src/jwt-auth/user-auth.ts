@@ -11,7 +11,7 @@ export function generateUserJWT(userPayload: {
   });
 }
 
-export function authenticateUserJWT(
+export async function authenticateUserJWT(
   req: Request,
   res: Response,
   next: NextFunction,

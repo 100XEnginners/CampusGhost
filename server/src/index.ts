@@ -3,9 +3,11 @@ import type { Request, Response, Express } from "express";
 import dotenv from "dotenv";
 import { userRouter } from "./routes/user";
 import cookieParser from "cookie-parser";
+import path from "path";
 
 dotenv.config({
   override: true,
+  path: path.join(__dirname, "../.env"),
 });
 
 const app: Express = express();
