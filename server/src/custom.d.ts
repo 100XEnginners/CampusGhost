@@ -1,11 +1,11 @@
-type userData = {
-  id: number,
-  createdAt: Date,
-  updatedAt: Date,
-  email: string,
-  randomUserName: string,
-  profilePicture: string | null,
-}
+type getUserDataType = {
+  id: number;
+  createdAt: Date;
+  updatedAt: Date;
+  email: string;
+  randomUserName: string;
+  profilePicture: string | null;
+};
 
 type decodedUser = {
   id: number;

@@ -1,13 +1,14 @@
 import { PrismaClient, User } from "@prisma/client";
 import { Router } from "express";
 import type { Request, Response } from "express";
-import { signupSchema } from "../zod/zod-schema";
+import { profileUpdateSchema, signupSchema } from "../zod/zod-schema";
 import { generateRandomuserName } from "../util/random-user-name";
 import bcrypt from "bcryptjs";
 import { authenticateUserJWT, generateUserJWT } from "../jwt-auth/user-auth";
 
 export const userRouter: Router = Router();
 const prisma = new PrismaClient();
+const saltRounds: number = 8;
 
 userRouter.post("/signup", async (req: Request, res: Response) => {
   try {
@@ -26,7 +27,6 @@ userRouter.post("/signup", async (req: Request, res: Response) => {
         .status(403)
         .json({ message: "User email address already exists" });
     }
-    const saltRounds: number = 8;
     const hashedPassword: string = await bcrypt.hash(password, saltRounds);
     const randomUserName: string = generateRandomuserName(10);
     await prisma.user.create({
@@ -95,8 +95,7 @@ userRouter.get(
   async (req: Request, res: Response) => {
     try {
       const decodedUser: decodedUser = req.decodedUser;
-      console.log(decodedUser);
-      const userData: userData | null = await prisma.user.findUnique({
+      const userData: getUserDataType | null = await prisma.user.findUnique({
         where: { id: decodedUser.id },
         select: {
           id: true,
@@ -104,14 +103,72 @@ userRouter.get(
           updatedAt: true,
           email: true,
           randomUserName: true,
-          profilePicture: true
-        }
-      })
+          profilePicture: true,
+        },
+      });
       await prisma.$disconnect();
       res.json({ userData });
     } catch (error) {
       console.error(error);
       await prisma.$disconnect();
+      res.sendStatus(500);
+    }
+  },
+);
+
+userRouter.post(
+  "/update-profile",
+  authenticateUserJWT,
+  async (req: Request, res: Response) => {
+    try {
+      const decodedUser: decodedUser = req.decodedUser;
+      const parsedInput = profileUpdateSchema.safeParse(req.body);
+      if (!parsedInput.success) {
+        return res.status(411).json({ message: parsedInput.error.format() });
+      }
+      const {
+        email,
+        password,
+        currentPassword,
+        profilePicture,
+      }: {
+        email: string;
+        password: string;
+        currentPassword: string;
+        profilePicture: string;
+      } = parsedInput.data;
+      const userData: { id: number; hashedPassword: string } | null =
+        await prisma.user.findUnique({
+          where: { id: decodedUser.id },
+          select: {
+            id: true,
+            hashedPassword: true,
+          },
+        });
+      const isPasswordMath: boolean = await bcrypt.compare(
+        currentPassword,
+        userData.hashedPassword,
+      );
+      if (!isPasswordMath) {
+        return res
+          .status(401)
+          .json({ message: "Current password does not match." });
+      }
+      const newHashedPassword: string = await bcrypt.hash(
+        password,
+        saltRounds,
+      );
+      await prisma.user.update({
+        where: { id: decodedUser.id },
+        data: {
+          email,
+          hashedPassword: newHashedPassword,
+          profilePicture,
+        },
+      });
+    } catch (error) {
+      await prisma.$disconnect();
+      console.error(error);
       res.sendStatus(500);
     }
   },
