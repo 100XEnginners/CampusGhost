@@ -1,10 +1,14 @@
 import Image from 'next/image'
+import Signup from '@/components/Signup'
 import { Inter } from 'next/font/google'
 
 const inter = Inter({ subsets: ['latin'] })
 
 export default function Home() {
   return (
-    <h2 className="text-2xl font-bold text-center text-blue-800">CampusGhost</h2>
+  <div className=' h-[100vh] w-full flex flex-col justify-center items-center'>
+    <Signup/>
+  </div>
+      
   )
 }
