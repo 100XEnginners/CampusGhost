@@ -1,4 +1,4 @@
-# Application Name
+# CampusGhost
 
 ## Description
 CampusGhost is an application where you can chat with people around the world without disclosing your identity.
@@ -10,7 +10,7 @@ CampusGhost is an application where you can chat with people around the world wi
 * Go to Client.
 
     ```bash
-     cd client
+    cd client
     ```
 * Install node_modules.
 
@@ -20,7 +20,7 @@ CampusGhost is an application where you can chat with people around the world wi
 * Start the server.
 
     ```bash
-      npm run dev
+     npm run dev
     ```
 
 
