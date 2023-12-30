@@ -9,12 +9,18 @@ CampusGhost is an application where you can chat with people around the world wi
 ### Installation for Client
 * Go to Client.
 
-    `cd client`
+    ```bash
+     cd client
+    ```
 * Install node_modules.
 
-    `npm i`
+    ```bash
+     npm install
+    ```
 * Start the server.
 
-    `npm run dev`
+    ```bash
+      npm run dev
+    ```
 
 
