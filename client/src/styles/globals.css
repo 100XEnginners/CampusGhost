@@ -7,10 +7,11 @@ body {
   font-family: 'Roboto', sans-serif;
   background-color: #f5f5f5;
   color: #333;
-  background-image: url('https://ideogram.ai/api/images/direct/c5rIT2ruTjO5eaDHjj3sSA.jpg');
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: initial;
+  /* background-image: url('https://ideogram.ai/api/images/direct/c5rIT2ruTjO5eaDHjj3sSA.jpg'); */
+  /* background-repeat: no-repeat; */
+  /* background-size: cover; */
+  /* background-position: center; */
+
 }
 
 .bg-wrapper{
