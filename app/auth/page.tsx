@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import SigninWithGithub from "../components/SigninWithGithub";
 
 export default function AuthRoute() {
   return (
@@ -17,7 +18,7 @@ export default function AuthRoute() {
               <Input type="email" id="email-id" placeholder="username@email.com" />
             </div>
             <Button className="mt-4">Login with Email</Button>
-            <Button className="mt-4">Login with GitHub</Button>
+            <SigninWithGithub />
           </div>
         </CardContent>
       </Card>
