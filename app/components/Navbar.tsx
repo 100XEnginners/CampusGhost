@@ -11,9 +11,7 @@ export async function Navbar() {
       <nav className="max-w-7xl mx-auto flex flex-row justify-between items-center m-6">
         <div className="left-nav">
           <Link href="/">
-            <div className="text-xl font-semibold">
-              Campus Ghost
-            </div>
+            <div className="text-xl font-semibold">Campus Ghost</div>
           </Link>
         </div>
         <div className="right-nav">
@@ -23,16 +21,12 @@ export async function Navbar() {
               <SignoutButton />
             </div>
           ) : (
-
             <Button asChild className="text-lg font-medium">
-              <Link href="/auth">
-                SignIn
-              </Link>
+              <Link href="/auth">SignIn</Link>
             </Button>
-
           )}
         </div>
       </nav>
     </header>
-  )
+  );
 }

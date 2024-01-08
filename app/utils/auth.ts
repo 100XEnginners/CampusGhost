@@ -10,7 +10,7 @@ export const authOptions = {
   providers: [
     GitHubProvider({
       clientId: process.env.GITHUB_ID as string,
-      clientSecret: process.env.GITHUB_SECRET_ID as string
+      clientSecret: process.env.GITHUB_SECRET_ID as string,
     }),
     // EmailProvider({
     //   server: {
@@ -23,5 +23,5 @@ export const authOptions = {
     //   },
     //   from: process.env.EMAIL_FROM
     // })
-  ]
-} satisfies NextAuthOptions
+  ],
+} satisfies NextAuthOptions;

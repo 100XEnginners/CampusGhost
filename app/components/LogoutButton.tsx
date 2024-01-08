@@ -1,10 +1,14 @@
-"use client"
+"use client";
 
-import { Button } from "@/components/ui/button"
-import { signOut } from "next-auth/react"
+import { Button } from "@/components/ui/button";
+import { signOut } from "next-auth/react";
 
 export default function SignoutButton() {
   return (
-    <Button onClick={() => signOut({ callbackUrl: `${window.location.origin}/auth` })}>Sign Out</Button>
-  )
+    <Button
+      onClick={() => signOut({ callbackUrl: `${window.location.origin}/auth` })}
+    >
+      Sign Out
+    </Button>
+  );
 }
