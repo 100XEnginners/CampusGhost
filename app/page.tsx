@@ -1,5 +1,8 @@
 import { getServerSession } from "next-auth"
 import { authOptions } from "./utils/auth"
+import LogoutButton from "./components/LogoutButton";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 export default async function Home() {
   const session = await getServerSession(authOptions);
@@ -9,9 +12,17 @@ export default async function Home() {
       <h2 className="text-xl text-center mt-2 font-medium">We need to update the UI of this page.</h2>
       {
         session ? (
-          <h1>You are authenticated</h1>
+          <div>
+            <h1>You are authenticated</h1>
+            <LogoutButton />
+          </div>
         ) : (
-          <h1>Signin here</h1>
+          <div className="">
+            <h1>Signin here</h1>
+            <Button asChild>
+              <Link href={"/auth"}>Login</Link>
+            </Button>
+          </div>
         )
       }
     </main>
