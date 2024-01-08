@@ -6,7 +6,7 @@ import { signIn } from "next-auth/react"
 
 export default function SigninWithGithub() {
   return (
-    <Button variant={"secondary"} onClick={() => signIn("github", { callbackUrl: `${window.location.origin}` })} className="mt-4">
+    <Button onClick={() => signIn("github", { callbackUrl: `${window.location.origin}` })} className="mt-4">
       <Github className="mr-2 h-4 w-4" />
       Sign In with Github
     </Button>

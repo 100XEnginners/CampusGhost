@@ -1,11 +1,8 @@
-import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
 import SigninWithGithub from "../components/SigninWithGithub";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../utils/auth";
 import { redirect } from "next/navigation";
-import SigninForm from "../components/SigninForm";
 
 export default async function AuthRoute() {
   const session = await getServerSession(authOptions);
@@ -20,7 +17,6 @@ export default async function AuthRoute() {
           <CardDescription className="text-center">Become a part of Campus Ghost Social Network</CardDescription>
         </CardHeader>
         <CardContent className="flex flex-col">
-          <SigninForm />
           <SigninWithGithub />
         </CardContent>
       </Card>
