@@ -1,8 +1,8 @@
 import { getServerSession } from "next-auth"
 import { authOptions } from "./utils/auth"
-import LogoutButton from "./components/LogoutButton";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import SignoutButton from "./components/LogoutButton";
 
 export default async function Home() {
   const session = await getServerSession(authOptions);
@@ -14,13 +14,13 @@ export default async function Home() {
         session ? (
           <div>
             <h1>You are authenticated</h1>
-            <LogoutButton />
+            <SignoutButton />
           </div>
         ) : (
           <div className="">
             <h1>Signin here</h1>
             <Button asChild>
-              <Link href={"/auth"}>Login</Link>
+              <Link href={"/auth"}>Signin</Link>
             </Button>
           </div>
         )

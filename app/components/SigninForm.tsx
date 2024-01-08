@@ -21,3 +21,5 @@ export default function SigninForm() {
     </form>
   )
 }
+
+// Signin using email is under development. This file is not being used and should not be used anywhare in the project.
