@@ -1,26 +1,27 @@
 # CampusGhost
 
 ## Description
-CampusGhost is an application where you can chat with people around the world without disclosing your identity.
 
+CampusGhost is an application where you can chat with people around the world without disclosing your identity.
 
 ## Installation
 
 ### Installation for Client
-* Go to Client.
 
-    ```bash
-    cd client
-    ```
-* Install node_modules.
+- Go to Client.
 
-    ```bash
-     npm install
-    ```
-* Start the server.
+  ```bash
+  cd client
+  ```
 
-    ```bash
-     npm run dev
-    ```
+- Install node_modules.
 
+  ```bash
+   npm install
+  ```
 
+- Start the server.
+
+  ```bash
+   npm run dev
+  ```
